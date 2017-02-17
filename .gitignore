@@ -7,3 +7,4 @@ public/
 .deploy*/
 scaffolds/
 themes/
+package.json
