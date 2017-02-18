@@ -8,3 +8,4 @@ public/
 scaffolds/
 themes/
 package.json
+.npmignore

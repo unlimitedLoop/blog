@@ -2,6 +2,7 @@
 title: Spring
 date: 2017-02-17 15:49:47
 tags: 日志
+categories: Java
 
 ---
 
@@ -35,7 +36,7 @@ spring-boot提供了一些注解用于条件判断，只有当条件满足的时
 
 ```java
 public class JdbcTemplateCondition implements Condition {
- 
+
   @Override
   public boolean matches(ConditionContext context,
                         AnnotatedTypeMetadata metadata) {
@@ -75,7 +76,7 @@ spring-boot的配置文件在classpath下的`application.yml`中，这个配置�
 
 ```java
 package cn.adam.stater.controller;
- 
+
 import cn.adam.stater.Application;
 import org.junit.Before;
 import org.junit.Test;
@@ -89,30 +90,30 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
- 
+
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
- 
+
 /**
 * Created by Adam on 2016/8/24.
 */
- 
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(Application.class)
 // 随机端口
 @WebIntegrationTest({"server.port=0"})
 public class TestControllerTest {
- 
+
     @Autowired
     private WebApplicationContext wac;
- 
+
     private MockMvc mockMvc;
- 
+
     @Before
     public void setup() {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
     }
- 
+
     @Test
     public void t1() throws Exception {
         String content = mockMvc.perform(MockMvcRequestBuilders.get("/t1").contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -121,7 +122,7 @@ public class TestControllerTest {
                 .andReturn().getResponse().getContentAsString();
         System.out.println(content);
     }
- 
+
     @Test
     public void t2() throws Exception {
         String content = mockMvc.perform(MockMvcRequestBuilders.get("/t2").contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -130,7 +131,7 @@ public class TestControllerTest {
                 .andReturn().getResponse().getContentAsString();
         System.out.println(content);
     }
- 
+
     @Test
     public void t3() throws Exception {
         String content = mockMvc.perform(MockMvcRequestBuilders.get("/t3").contentType(MediaType.APPLICATION_JSON_UTF8).sessionAttr("user", "Adam"))
@@ -139,7 +140,7 @@ public class TestControllerTest {
                 .andReturn().getResponse().getContentAsString();
         System.out.println(content);
     }
- 
+
 }
 ```
 
@@ -155,82 +156,82 @@ public class TestControllerTest {
 
 ```java
 package cn.adam;
- 
+
 import cn.adam.entity.User;
 import org.junit.Test;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
- 
+
 import java.net.URI;
 import java.util.Map;
- 
+
 /**
 * Created by Adam on 2017/2/9.
 */
- 
- 
+
+
 public class Test1 {
- 
+
   @Test
   public void t1() {
- 
+
     RestTemplate restTemplate = new RestTemplate();
     // post请求直接在链接上加参数
     ResponseEntity<Map> entity = restTemplate.postForEntity("http://localhost:8080/t7?name=chen&age=27", null, Map.class);
     System.out.println(entity.getBody());
   }
- 
+
   @Test
   public void t2() {
- 
+
     RestTemplate restTemplate = new RestTemplate();
- 
+
     // 请求实体
     MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
     map.add("name", "sdf");
     map.add("age", "27");
- 
+
     // 请求头
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
- 
+
     // 组装请求
     RequestEntity<Object> requestEntity = new RequestEntity<>(map, headers, HttpMethod.POST, URI.create("http://localhost:8080/t7"));
     ResponseEntity<Map> responseEntity = restTemplate.exchange(requestEntity, Map.class);
     System.out.println(responseEntity.getBody());
   }
- 
+
   @Test
   public void t3() {
- 
+
     RestTemplate restTemplate = new RestTemplate();
- 
+
     // 请求实体，对应controller中@RequestBody参数
     User user = new User();
     user.setAge(27);
     user.setId(100);
     user.setName("xiang");
- 
+
     ResponseEntity<Map> mapResponseEntity = restTemplate.postForEntity("http://localhost:8080/t8", user, Map.class);
     System.out.println(mapResponseEntity.getBody());
   }
- 
+
   @Test
   public void t4() {
- 
+
     // 最常见请求方式，填充参数
     RestTemplate restTemplate = new RestTemplate();
     MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
     map.add("name", "sdf");
     map.add("age", "27");
- 
+
     ResponseEntity<Map> responseEntity = restTemplate.postForEntity("http://localhost:8080/t7", map, Map.class);
     System.out.println(responseEntity.getBody());
   }
 }
- 
+
 ```
 
 # 异常处理
@@ -283,24 +284,24 @@ public class Test1 {
 @RestController
 @Validated
 public class TestController extends RestExceptionHandler {
- 
+
   @RequestMapping(value = "t1")
   public RestResponse t1() {
- 
+
     return new RestResponse();
   }
- 
+
   @RequestMapping(value = "t2")
   public RestResponse t2(@Validated @Min(value = 100, message = "id#不能小于100") @RequestParam("id") int id,
                             @Validated @Min(value = 3, message = "name#长度不能小于3") @RequestParam("name") String name) {
     return new RestResponse();
   }
- 
+
   @RequestMapping(value = "t3")
   public RestResponse t3(@Valid User user) {
     return new RestResponse();
   }
- 
+
   @RequestMapping(value = "t4")
   public RestResponse t4(@Validated(EditGroup.class) User user) {
     return new RestResponse();
@@ -350,7 +351,7 @@ logging.file=/var/log/${spring.application.name}.log
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="true">
     <include resource="org/springframework/boot/logging/logback/base.xml" />
- 
+
     <root level="INFO">
         <appender-ref ref="CONSOLE" />
         <appender-ref ref="FILE" />
@@ -368,17 +369,17 @@ logging.file=/var/log/${spring.application.name}.log
 
 ```java
 public class LogRequestInterceptor extends HandlerInterceptorAdapter {
- 
+
     private static final Logger LOGGER = LoggerFactory.getLogger(LogRequestInterceptor.class);
- 
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
- 
+
         StrBuilder requestInfo = new StrBuilder();
         requestInfo.append("[ ").append(request.getMethod())
                 .append(" ").append(request.getRequestURI())
                 .append(" ").appendln(request.getProtocol());
- 
+
         Enumeration<String> headerNames = request.getHeaderNames();
         if (headerNames != null) {
             while (headerNames.hasMoreElements()) {
@@ -386,9 +387,9 @@ public class LogRequestInterceptor extends HandlerInterceptorAdapter {
                 requestInfo.append(name).append(": ").appendln(request.getHeader(name));
             }
         }
- 
+
         requestInfo.appendln("");
- 
+
         Enumeration<String> parameterNames = request.getParameterNames();
         if (parameterNames != null) {
             while (parameterNames.hasMoreElements()) {
@@ -396,11 +397,11 @@ public class LogRequestInterceptor extends HandlerInterceptorAdapter {
                 requestInfo.append(name).append(": ").appendln(request.getParameter(name));
             }
         }
- 
+
         requestInfo.append("]");
- 
+
         LOGGER.info("Received {}", requestInfo.toString());
- 
+
         return true;
     }
 }

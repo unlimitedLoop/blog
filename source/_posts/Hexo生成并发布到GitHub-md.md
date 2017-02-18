@@ -1,5 +1,5 @@
 ---
-title: Hexo生成并发布到GitHub.md
+title: Hexo生成并发布到GitHub
 date: 2017-02-17 23:46:09
 tags: 教程
 ---
@@ -28,6 +28,34 @@ tags: 教程
 生成静态文件
 `hexo generate`
 
+## 配置标签和分类页面
+### 新建标签页面
+`hexo new page "tags"`
+在source目录下生成一个tags文件夹，包含一个index.md文件
+修改这个文件
+```md
+---
+title: tags
+date: 2017-02-18 11:12:27
+type: "tags"
+comments: false
+---
+```
+
+### 新建分类页面
+`hexo new page "categories"`
+在source目录下生成一个categories文件夹，包含一个index.md文件
+修改这个文件
+```md
+---
+title: categories
+date: 2017-02-18 11:12:39
+type: categories
+comments: false
+---
+```
+
+
 ## 部署到GitHub
 首先生成SSH，然后将公钥配置到GitHub上
 新建GitHub Pages项目
@@ -39,6 +67,9 @@ deploy:
   repo: git@github.com:unlimitedLoop/unlimitedLoop.github.io.git
   branch: master
 ```
+
+安装GitHub部署插件
+`	npm install hexo-deployer-git --save`
 
 部署
 `hexo deploy`
