@@ -75,3 +75,14 @@ deploy:
     github:  git@github.com:unlimitedLoop/unlimitedLoop.github.io.git
     coding: git@git.coding.net:UnlimitedLoop/UnlimitedLoop.coding.me.git
   branch: master
+
+
+duoshuo_share: true
+duoshuo_hotartical: true
+
+
+search:
+  path: search.xml
+  field: post
+  format: html
+  limit: 10000
