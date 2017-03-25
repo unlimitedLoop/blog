@@ -64,3 +64,5 @@ Windows系统下，如果另外安装了Fira字体，在设置中`Appearance-Ant
 - 64位配置IDEA_JDK_64
 
 执行下载的jdk根目录
+
+:smiley:
